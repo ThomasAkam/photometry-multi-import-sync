@@ -1,2 +1,9 @@
 # photometry-multi-import-sync
-Example code for importing and syncing multiple photometry and behaviour data files.
+
+Example code for importing a set of [pyControl](https://pycontrol.readthedocs.io/en/latest/) behavioural data files and [pyPhotometry](https://pyphotometry.readthedocs.io/en/latest/) photometry data files contained in separate data folders.  The script automatically finds corresponding data files in each folder based on the subject ID and date, extracting this information from the file names.  If your subject IDs have a different format from those in the example data you may need to modify the function `_get_file_info()` that extracts the subject ID and date.  
+
+*import_script.py* generates a list called `sessions` which contains behavioural sessions represented as pyControl [Session](https://pycontrol.readthedocs.io/en/latest/user-guide/pycontrol-data/#session) objects. Photometry data is attached to each session as a `session.photo_data` attribute.  Synchronization between the photometry and behaviour data is implemented using pyControl's [Rsync](https://pycontrol.readthedocs.io/en/latest/user-guide/synchronisation/) tool.  An `Rsync_aligner` object, used to convert behavioural event times into photometry sample numbers, is stored on each session as `session.photo_data['aligner']`.  If the alignment code does not find a match between the sync pulses recorded in each file, the photometry data is not attached to the session and an error message is displayed.
+
+The function average_response() shows a simple analysis using the imported data.
+
+The only preprocessing performed on the photometry data is bandpass filtering which occurs in the `import_ppd` function.  To add additional pre-processing steps it is recommended to modify the `import_ppd` function.
